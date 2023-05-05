@@ -1,39 +1,37 @@
 import { Form, Input, message } from "antd";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import Spinner from "../components/Spinner";
+import { hideLoading, showLoading } from "../redux/features/alertSlice";
 
 const Login = () => {
-  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  //from submit
+  
+  // Submit for Login
   const submitHandler = async (values) => {
     try {
-      setLoading(true);
+      dispatch(showLoading());
       const { data } = await axios.post("/api/user/login", values);
+      window.location.reload();
+      dispatch(hideLoading());
       if (data.success) {
-        setLoading(false);
         localStorage.setItem("token", data.token);
-        message.success("login success");
+        message.success("Login Successfully");
         navigate("/");
+      } else {
+        message.error(data.message);
       }
     } catch (error) {
-      setLoading(false);
+      dispatch(hideLoading());
       message.error("Something went wrong");
     }
   };
 
-  // prevent for login user
-  useEffect(() => {
-    if (localStorage.getItem("user")) {
-      //navigate("/");
-    }
-  }, [navigate]);
   return (
     <>
       <div className="register-page">
-        {loading && <Spinner />}
         <Form layout="vertical" onFinish={submitHandler}>
           <h1>Login</h1>
           <Form.Item label="Email" name="email">

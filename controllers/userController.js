@@ -1,13 +1,12 @@
 const bcrypt = require("bcryptjs");
 const userModel = require('../models/userModel');
+const {doctorModel} = require('../models/doctorModel');
 const jwt = require("jsonwebtoken");
 
 // login callback
 const loginController = async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log('email:', email);
-    console.log('password:', password);
     const user = await userModel.findOne({ email });
     if (!user) {
       return res.status(404).send('User Not Found');
@@ -79,4 +78,35 @@ const authController = async (req, res) => {
   }
 };
 
-module.exports = { loginController, registerController, authController };
+// Appply Doctor Controller
+const applyDoctorController = async (req, res) => {
+  try {
+    const newDoctor = await doctorModel({ ...req.body, status: "pending" });
+    await newDoctor.save();
+    const adminUser = await userModel.findOne({ isAdmin: true });
+    const notifcation = adminUser.notifcation;
+    notifcation.push({
+      type: "apply-doctor-request",
+      message: `${newDoctor.firstName} ${newDoctor.lastName} Has Applied For A Doctor Account`,
+      data: {
+        doctorId: newDoctor._id,
+        name: newDoctor.firstName + " " + newDoctor.lastName,
+        onClickPath: "/admin/doctors",
+      },
+    });
+    await userModel.findByIdAndUpdate(adminUser._id, { notifcation });
+    res.status(201).send({
+      success: true,
+      message: "Doctor account applied successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      error,
+      message: "Error while applying for doctor",
+    });
+  }
+};
+
+module.exports = { loginController, registerController, authController , applyDoctorController};

@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-
-
+import Layout from "../components/Layout";
 
 const HomePage = () => {
   const [userData, setUserData] = useState(null);
@@ -28,14 +27,10 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div>
+    <Layout>
       <h1>Home Page</h1>
-      {userData && (
-        <p>
-          Welcome back, {userData.name}! 
-        </p>
-      )}
-    </div>
+      {userData && <p>Welcome back!</p>}
+    </Layout>
   );
 };
 

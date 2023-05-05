@@ -1,36 +1,35 @@
 import { Form, Input, message } from "antd";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import Spinner from "../components/Spinner";
+import { hideLoading, showLoading } from "../redux/features/alertSlice";
 
 const Register = () => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
+  // Submit for Register
   const submitHandler = async (values) => {
     try {
-      setLoading(true);
-      await axios.post("/api/user/register", values);
+      dispatch(showLoading());
+      const { data } = await axios.post("/api/user/register", values);
+      dispatch(hideLoading());
+      if (data.success) {
       message.success("Registration Successful");
-      setLoading(false);
-      //navigate("/login");
+      navigate("/login");
+      } else {
+        message.error(data.message);
+      }
     } catch (error) {
-      setLoading(false);
+      dispatch(hideLoading());
       message.error("Registration Failed");
     }
   };
-  // prevent for login user
-  useEffect(() => {
-    if (localStorage.getItem("user")) {
-      //navigate("/");
-    }
-  }, [navigate]);
 
   return (
     <>
       <div className="register-page">
-        {loading && <Spinner />}
         <Form layout="vertical" onFinish={submitHandler}>
           <h1>Register</h1>
           <Form.Item
