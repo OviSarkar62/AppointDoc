@@ -37,3 +37,7 @@ The application will be available at http://localhost:3000/.
 - Node.js - JavaScript runtime environment for building scalable server-side applications
 - JWT - JSON Web Token for user authentication and authorization
 - Bcrypt - Password hashing library for secure password storage
+
+## Conclusion
+
+AppointDoc is a simple and effective appointment booking system for doctors. It allows doctors to manage their appointments with ease, and is designed to be user-friendly and intuitive. The system is built using modern web technologies and is easy to install and use.
