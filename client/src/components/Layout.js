@@ -1,5 +1,5 @@
-import { message } from "antd";
-import React, { useState } from "react";
+import { Badge, message } from "antd";
+import React from "react";
 import { useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../styles/LayoutStyles.css";
@@ -9,7 +9,6 @@ const Layout = ({ children }) => {
   const { user } = useSelector((state) => state.user);
   const location = useLocation();
   const navigate = useNavigate();
-  const [isDarkMode, setIsDarkMode] = useState(false);
 
   // logout function
   const handleLogout = () => {
@@ -17,13 +16,37 @@ const Layout = ({ children }) => {
     message.success("Logout Successfully");
     navigate("/login");
   };
+  // =========== doctor menu ===============
+  const doctorMenu = [
+    {
+      name: "Home",
+      path: "/",
+      icon: "fa-solid fa-house",
+    },
+    {
+      name: "Appointments",
+      path: "/doctor-appointments",
+      icon: "fa-solid fa-list",
+    },
+
+    {
+      name: "Profile",
+      path: `/doctor/profile/${user?._id}`,
+      icon: "fa-solid fa-user",
+    },
+  ];
+  // =========== doctor menu ===============
 
   // rendering menu list
-  const SidebarMenu = user?.isAdmin ? adminMenu : userMenu;
+  const SidebarMenu = user?.isAdmin
+    ? adminMenu.filter((menu) => menu.name !== "Profile")
+    : user?.isDoctor
+    ? doctorMenu
+    : userMenu.filter((menu) => menu.name !== "Profile");
 
   return (
     <>
-      <div className={`main ${isDarkMode ? "dark" : ""}`}>
+      <div className={`main`}>
         <div className="layout">
           <div className="sidebar">
             <div className="logo">
@@ -51,15 +74,21 @@ const Layout = ({ children }) => {
           </div>
           <div className="content">
             <div className="header">
-              <div className="header-content">
-              
+              <div className="header-content" style={{ cursor: "pointer" }}>
+                <Badge
+                  count={
+                    user && user.notification ? user.notification.length : 0
+                  }
+                  onClick={() => {
+                    navigate("/notification");
+                  }}
+                >
                   <i className="fa-solid fa-bell"></i>
-          
-                <Link to="/profile">{user?.name}</Link>
+                </Badge>
               </div>
-              <button onClick={() => setIsDarkMode(!isDarkMode)}>
-                {isDarkMode ? "Dark Mode" : "Light Mode"}
-              </button>
+              <div className="user-doctor-admin-name">
+                <h5>{user?.name}</h5>
+              </div>
             </div>
             <div className="body">{children}</div>
           </div>

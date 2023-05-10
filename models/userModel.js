@@ -13,7 +13,7 @@ const userSchema = Joi.object({
     .required(),
   isAdmin: Joi.boolean().optional(),
   isDoctor: Joi.boolean().optional(),
-  notifcation: Joi.array().items(Joi.object({
+  notification: Joi.array().items(Joi.object({
     type: Joi.string().required(),
     message: Joi.string().required(),
     data: Joi.object({
@@ -77,7 +77,7 @@ const userMongooseSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  notifcation: {
+  notification: {
     type: Array,
     default: [],
   },

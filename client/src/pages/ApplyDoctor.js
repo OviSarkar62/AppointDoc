@@ -11,13 +11,20 @@ const ApplyDoctor = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  //handle form
+
   const handleFinish = async (values) => {
     try {
       dispatch(showLoading());
+      const starttime = values.starttime.format("HH:mm");
+      const endtime = values.endtime.format("HH:mm");
       const res = await axios.post(
         "/api/user/apply-doctor",
-        { ...values, userId: user._id },
+        {
+          ...values,
+          userId: user._id,
+          starttime,
+          endtime,
+        },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -26,20 +33,21 @@ const ApplyDoctor = () => {
       );
       dispatch(hideLoading());
       if (res.data.success) {
-        message.success(res.data.success);
+        message.success(res.data.message);
         navigate("/");
       } else {
-        message.error(res.data.success);
+        message.error(res.data.message);
       }
     } catch (error) {
       dispatch(hideLoading());
       console.log(error);
-      message.error("Somthing Went Wrrong ");
+      message.error("Something Went Wrong");
     }
   };
+  
   return (
     <Layout>
-      <h1 className="text-center">Apply Doctor</h1>
+      <h3 className="text-center">Apply Doctor</h3>
       <Form layout="vertical" onFinish={handleFinish} className="m-3">
         <h4 className="">Personal Details : </h4>
         <Row gutter={20}>
@@ -99,7 +107,7 @@ const ApplyDoctor = () => {
             </Form.Item>
           </Col>
         </Row>
-        <br/>
+        <br />
         <h4>Professional Details :</h4>
         <Row gutter={20}>
           <Col xs={24} md={24} lg={8}>
@@ -107,7 +115,9 @@ const ApplyDoctor = () => {
               label="Specialization"
               name="specialization"
               required
-              rules={[{ required: true, message: "Specialization is required" }]}
+              rules={[
+                { required: true, message: "Specialization is required" },
+              ]}
             >
               <Input type="text" placeholder="Specialization" />
             </Form.Item>
@@ -117,7 +127,7 @@ const ApplyDoctor = () => {
               label="Experience"
               name="experience"
               required
-              rules={[{ required: true, message: "Experience is required"}]}
+              rules={[{ required: true, message: "Experience is required" }]}
             >
               <Input type="text" placeholder="Experience" />
             </Form.Item>
@@ -127,20 +137,32 @@ const ApplyDoctor = () => {
               label="Fees Per Consultation"
               name="feesPerConsultation"
               required
-              rules={[{ required: true, message: "Fee is required"}]}
+              rules={[{ required: true, message: "Fee is required" }]}
             >
               <Input type="text" placeholder="Fee" />
             </Form.Item>
           </Col>
           <Col xs={24} md={24} lg={8}>
-            <Form.Item label="Timings" name="timings" required
-            rules={[{ required: true, message: "Timings are required"}]}>
-              <TimePicker.RangePicker format="HH:mm" />
+            <Form.Item
+              name="starttime"
+              label="Start Time"
+              rules={[{ required: true }]}
+            >
+              <TimePicker format="HH:mm" />
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={24} lg={8}>
+            <Form.Item
+              name="endtime"
+              label="End Time"
+              rules={[{ required: true }]}
+            >
+              <TimePicker format="HH:mm" />
             </Form.Item>
           </Col>
           <Col xs={24} md={24} lg={8}></Col>
           <Col xs={24} md={24} lg={8}>
-            <br/>
+            <br />
             <button className="btn btn-primary form-btn" type="submit">
               Submit
             </button>
@@ -151,4 +173,4 @@ const ApplyDoctor = () => {
   );
 };
 
-export default ApplyDoctor
+export default ApplyDoctor;

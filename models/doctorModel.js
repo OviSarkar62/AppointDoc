@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Joi = require("joi");
+const Joi = require('joi');
 
 const doctorSchema = new mongoose.Schema({
   userId: {
@@ -50,35 +50,41 @@ const doctorSchema = new mongoose.Schema({
     type: String,
     default: "pending",
   },
-  timings: {
-    type: Object,
-    required: [true, "Work timing is required"],
+  starttime: {
+    type: String,
+    required: [true],
   },
+  endtime: {
+    type: String,
+    required: [true],
+  },  
   createdAt: {
     type: Date,
     default: Date.now,
   },
 });
 
-const doctorModel = mongoose.model("doctors", doctorSchema);
+const docSchema = Joi.object({
+  userId: Joi.string(),
+  firstName: Joi.string().required().min(2).max(50),
+  lastName: Joi.string().required().min(2).max(50),
+  phone: Joi.string().required(),
+  email: Joi.string().required().email(),
+  website: Joi.string(),
+  address: Joi.string().required(),
+  specialization: Joi.string().required(),
+  experience: Joi.string().required(),
+  feesPerConsultation: Joi.number().required(),
+  status: Joi.string().default('pending'),
+  starttime: Joi.string().required(),
+  endtime: Joi.string().required(),
+  createdAt: Joi.date().default(Date.now),
+});
 
-function validateDoctor(doctor) {
-  const schema = Joi.object({
-    firstName: Joi.string().min(2).max(50).required(),
-    lastName: Joi.string().min(2).max(50).required(),
-    phone: Joi.string().required(),
-    email: Joi.string().email().required(),
-    address: Joi.string().required(),
-    specialization: Joi.string().required(),
-    experience: Joi.string().required(),
-    feesPerConsultation: Joi.number().required(),
-    timings: Joi.object().required(),
-  });
-
-  return schema.validate(doctor);
-}
-
-module.exports = {
-  doctorModel,
-  validateDoctor,
+// Add the Joi validation to the Mongoose schema
+doctorSchema.validateDoctor = async function () {
+  return docSchema.validateAsync(this.toObject());
 };
+
+const doctorModel = mongoose.model("doctors", doctorSchema);
+module.exports = doctorModel;
