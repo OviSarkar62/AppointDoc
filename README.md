@@ -41,3 +41,7 @@ The application will be available at http://localhost:3000/.
 ## Conclusion
 
 AppointDoc is a simple and effective appointment booking system for doctors. It allows doctors to manage their appointments with ease, and is designed to be user-friendly and intuitive. The system is built using modern web technologies and is easy to install and use.
+
+## Live Link
+
+The live project: [AppointDoc](https://appointdoc.onrender.com)
