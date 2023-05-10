@@ -19,7 +19,15 @@ Once you have cloned the repository, navigate to the root directory of the proje
 The application will be available at http://localhost:3000/.
 
 
-## Features
+## Usage
+
+- The AppointDoc application allows doctors to manage their appointments with ease. Doctors can create new appointments, view existing appointments, and approve or reject appointments as necessary.
+
+To create a new appointment, the user needs to click on the "New Appointment" button on the doctor's card. They will then be presented with a form where they can enter the details of the appointment, including date and time.
+
+To view existing appointments, the doctor needs to click on the "Appointments" button on the sidebar. They will then be presented with a list of all their appointments, presented by date and time. The doctor can click on any appointment to approve or reject to change it's pending status.
+
+To update time of availability, the doctor needs to click on the profile page where they wish to update the time of appointments. They will then be presented with a form where they can edit the start time and end time details of the appointment.
 
 ## Technologies Used
 
