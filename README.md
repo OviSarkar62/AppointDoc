@@ -44,4 +44,4 @@ AppointDoc is a simple and effective appointment booking system for doctors. It 
 
 ## Live Link
 
-The live project: [AppointDoc](https://appointdoc.onrender.com)
+The live project: [AppointDoc](https://appoint-doc.vercel.app/login)
