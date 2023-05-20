@@ -2,6 +2,15 @@
 
 This is a professional-grade MERN (MongoDB, Express, React, Node.js) stack web application for booking doctor appointments. Patients can browse through a list of doctors and their availability and book an appointment with their preferred doctor. Doctors can view their schedule, manage their availability, and approve/cancel appointments.
 
+## Project View
+
+### For USER Profile
+
+- **Homepage**
+<p align="center">
+  <img alt="img-name" src="Images/Homepage from User.png" width="700">
+</p>
+
 ## Installation
 
 To install AppointDoc, you need to have Node.js and npm installed on your system. Once you have installed these, you can clone the AppointDoc repository from GitHub using the following command:
