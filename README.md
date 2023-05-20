@@ -97,7 +97,7 @@ The application will be available at http://localhost:3000/.
 
 - To update time of availability, the doctor needs to click on the profile page where they wish to update the time of appointments. They will then be presented with a form where they can edit the start time and end time details of the appointment.
 
-## Technologies Used
+## Stack
 
 - MongoDB - NoSQL database for storing data
 - Express - Backend framework for building RESTful APIs
