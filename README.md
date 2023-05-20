@@ -4,7 +4,7 @@ This is a professional-grade MERN (MongoDB, Express, React, Node.js) stack web a
 
 ## Project View
 
-<h4>1. For USER Profile<h4/>
+<h4>1. For User Profile<h4/>
 
 - **Homepage**
 <p align="center">
@@ -19,6 +19,21 @@ This is a professional-grade MERN (MongoDB, Express, React, Node.js) stack web a
 - **Booking Appointment**
 <p align="center">
   <img alt="img-name" src="Images/Booking Appointment as User.png" width="700">
+</p>
+  
+- **Apply As Doctor**
+<p align="center">
+  <img alt="img-name" src="Images/User can apply for doctor.png" width="700">
+</p>
+
+- **New Notifications**
+<p align="center">
+  <img alt="img-name" src="Images/Notification Page for New Notifications.png" width="700">
+</p>
+
+- **Read Notifications**
+<p align="center">
+  <img alt="img-name" src="Images/After Read Notification Page.png" width="700">
 </p>
 
 ## Installation
