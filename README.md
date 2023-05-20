@@ -53,6 +53,23 @@ This is a professional-grade MERN (MongoDB, Express, React, Node.js) stack web a
   <img alt="img-name" src="Images/Manage Doctor Profile.png" width="700">
 </p>
   
+<h4>3. For Admin Profile<h4/>
+  
+- **Homepage**
+<p align="center">
+  <img alt="img-name" src="Images/Homepage for Admin.png" width="700">
+</p>
+
+- **Doctors List**
+<p align="center">
+  <img alt="img-name" src="Images/Doctor List from admin page.png" width="700">
+</p>
+  
+- **Users List**
+<p align="center">
+  <img alt="img-name" src="Images/Users List from Admin.png" width="700">
+</p>
+  
 ## Installation
 
 To install AppointDoc, you need to have Node.js and npm installed on your system. Once you have installed these, you can clone the AppointDoc repository from GitHub using the following command:
