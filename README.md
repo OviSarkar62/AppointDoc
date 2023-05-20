@@ -72,19 +72,45 @@ This is a professional-grade MERN (MongoDB, Express, React, Node.js) stack web a
   
 ## Installation
 
-To install AppointDoc, you need to have Node.js and npm installed on your system. Once you have installed these, you can clone the AppointDoc repository from GitHub using the following command:
+To set up BloodLife locally, follow these steps:
+
+- Clone the repository:
 
       git clone https://github.com/OviSarkar62/AppointDoc.git
       
-Once you have cloned the repository, navigate to the root directory of the project and run the following command to install the required dependencies:
+- Install the required dependencies for backend:
 
       npm install express joi jsonwebtoken moment mongoose morgan nodemon zxcvbn dotenv colors bcryptjs
      
- After installing the dependencies, you can start the application using the following command:
- 
-      npm start
+- Navigate to the client directory: 
 
-The application will be available at http://localhost:3000/.
+       cd client
+    
+- Install the dependencies for the client: 
+
+       npm i react-router-dom react-redux axios antd @reduxjs/toolkit react-bootstrap moment
+    
+- Create a .env file in the root directory with the following environment variables:
+
+       DB_URL = mongodb+srv://<user>:<pass>@cluster0.l17quyr.mongodb.net/database
+
+       JWT_SECRET = A_Secret_Value
+  
+       PORT = 4000
+
+- Start the server: 
+
+       npm start
+    
+- In a new terminal window, navigate to the client directory:
+
+       cd client
+    
+- Start the client: 
+
+       npm start
+    
+- Access the application. Open your web browser and visit http://localhost:3000 to access the application.
 
 
 ## Usage
