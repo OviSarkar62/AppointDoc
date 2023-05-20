@@ -4,7 +4,7 @@ This is a professional-grade MERN (MongoDB, Express, React, Node.js) stack web a
 
 ## Project View
 
-- ***For USER Profile***
+<h3>For USER Profile<h3/>
 
 - **Homepage**
 <p align="center">
