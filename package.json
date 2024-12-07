@@ -13,14 +13,16 @@
     "bcrypt": "^5.1.0",
     "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
-    "dotenv": "^16.0.3",
-    "express": "^4.18.2",
-    "joi": "^17.9.2",
-    "jsonwebtoken": "^9.0.0",
-    "moment": "^2.29.4",
-    "mongoose": "^7.1.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.1",
+    "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.2",
+    "moment": "^2.30.1",
+    "mongoose": "^7.8.3",
     "morgan": "^1.10.0",
+    "nodemailer": "^6.9.16",
     "nodemon": "^2.0.22",
+    "react-hot-toast": "^2.4.1",
     "zxcvbn": "^4.4.2"
   }
 }

@@ -4,6 +4,35 @@ const doctorModel = require("../models/doctorModel");
 const appointmentModel = require("../models/appointmentModel");
 const jwt = require("jsonwebtoken");
 const moment = require("moment");
+const nodemailer = require("nodemailer");
+
+const generateCode = () => {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+};
+
+const sendAuthCodeToEmail = async (email, code) => {
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: 'kumailkazmi14@gmail.com', // Your email address
+      pass: 'ghql poim iomy mwls', // Your email password or app password
+    },
+  });
+
+  const mailOptions = {
+    from: 'kumailkazmi14@gmail.com',
+    to: email,
+    subject: "Secure Appointment Authentication Code",
+    text: `Your authentication code is: ${code}\nThis code will expire in 5 minutes.`,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log("Email sent successfully");
+  } catch (error) {
+    console.error("Error sending email:", error);
+  }
+};
 
 // login callback
 const loginController = async (req, res) => {
@@ -11,21 +40,86 @@ const loginController = async (req, res) => {
     const { email, password } = req.body;
     const user = await userModel.findOne({ email });
     if (!user) {
-      return res.status(404).send('User Not Found');
+      return res.status(404).send({ success: false, message: 'User Not Found' });
     }
-    // Compare hashed password
+
     const match = await bcrypt.compare(password, user.password);
     if (!match) {
-      return res.status(401).send('Invalid Password');
+      return res.status(401).send({ success: false, message: 'Invalid Password' });
     }
-    const token = jwt.sign({id: user._id}, process.env.JWT_SECRET,{expiresIn:"1d"},);
-    res.status(200).send({ message: "Login Success", success: true, token });
+
+    // Generate 2FA code
+    const code = generateCode();
+    console.log(`Generated 2FA code: ${code}`);
+    const expiry = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes from now
+
+    user.twoFactorCode = code;
+    user.twoFactorCodeExpiry = expiry;
+    await user.save();
+
+    // Send code via email
+    await sendAuthCodeToEmail(email, code);
+
+    res.status(200).send({ 
+      message: "2FA Code Sent. Please verify to continue.",
+      success: true,
+      requires2FA: true,
+    });
   } catch (error) {
-    console.log(error);
-    console.log(process.env.JWT_SECRET);
-    res.status(500).send({ message: `Error in Login CTRL ${error.message}` });
+    console.error(error);
+    res.status(500).send({ message: `Error in Login CTRL: ${error.message}` });
   }
 };
+
+const verify2FAController = async (req, res) => {
+  try {
+    const { email, code } = req.body;
+    const user = await userModel.findOne({ email });
+
+    if (!user) {
+      return res.status(404).send({ success: false, message: 'User Not Found' });
+    }
+
+    // Check if code matches and is within expiry
+    if (user.twoFactorCode !== code || new Date() > user.twoFactorCodeExpiry) {
+      return res.status(401).send({ success: false, message: 'Invalid or Expired Code' });
+    }
+
+    // Clear the 2FA code and expiry
+    user.twoFactorCode = null;
+    user.twoFactorCodeExpiry = null;
+    await user.save();
+
+    // Generate JWT token
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1d" });
+
+    res.status(200).send({ message: "2FA Verified Successfully", success: true, token });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: `Error in 2FA Verification: ${error.message}` });
+  }
+};
+
+// const loginController = async (req, res) => {
+//   try {
+//     const { email, password } = req.body;
+//     const user = await userModel.findOne({ email });
+//     if (!user) {
+//       return res.status(404).send('User Not Found');
+//     }
+//     // Compare hashed password
+//     const match = await bcrypt.compare(password, user.password);
+//     if (!match) {
+//       return res.status(401).send('Invalid Password');
+//     }
+//     const token = jwt.sign({id: user._id}, process.env.JWT_SECRET,{expiresIn:"1d"},);
+//     res.status(200).send({ message: "Login Success", success: true, token });
+//   } catch (error) {
+//     console.log(error);
+//     console.log(process.env.JWT_SECRET);
+//     res.status(500).send({ message: `Error in Login CTRL ${error.message}` });
+//   }
+// };
 
 //Register Callback
 const registerController = async (req, res) => {
@@ -369,4 +463,4 @@ const userAppointmentsController = async (req, res) => {
   }
 };
 
-module.exports = { loginController, registerController, authController , applyDoctorController, getAllNotificationController, deleteAllNotificationController, getAllDocotrsController, bookAppointmentController, bookingAvailabilityController, userAppointmentsController};
+module.exports = { loginController, verify2FAController, registerController, authController , applyDoctorController, getAllNotificationController, deleteAllNotificationController, getAllDocotrsController, bookAppointmentController, bookingAvailabilityController, userAppointmentsController};

@@ -89,6 +89,14 @@ const userMongooseSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  twoFactorCode: {
+    type: String,
+    default: null,
+  },
+  twoFactorCodeExpiry: {
+    type: Date,
+    default: null,
+  },
 });
 
 // Add the Joi validation to the Mongoose schema
